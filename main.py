@@ -8,10 +8,9 @@ import datetime
 load_dotenv()
 
 def getCurrentTime():
-	now = datetime.datetime.now()
-	message = str(now.hour) + ":" + str(now.minute) + ":" + str(now.second)
-	print(message)
-	return message
+	now = datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
+	print(now)
+	return now
 
 def tweet():
   twitter = OAuth1Session(
@@ -28,7 +27,9 @@ def tweet():
   res = twitter.post(url, json=params)
   print(res.status_code)
 
-schedule.every().hour.do(tweet)
+schedule.every().day.at("07:00").do(tweet)
+schedule.every().day.at("12:00").do(tweet)
+schedule.every().day.at("21:00").do(tweet)
 
 while True:
   schedule.run_pending()

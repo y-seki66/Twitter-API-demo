@@ -4,13 +4,16 @@ from requests_oauthlib import OAuth1Session
 import schedule
 import time
 import datetime
+from pytz import timezone
 
 load_dotenv()
 
+
 def getCurrentTime():
-	now = datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
-	print(now)
-	return now
+  utc = datetime.datetime.now(timezone('UTC'))
+  jst = utc.astimezone(timezone('Asia/Tokyo')).strftime('%H:%M')
+  print(jst)
+  # return jst
 
 def tweet():
   twitter = OAuth1Session(
@@ -27,9 +30,7 @@ def tweet():
   res = twitter.post(url, json=params)
   print(res.status_code)
 
-schedule.every().day.at("07:00").do(tweet)
-schedule.every().day.at("12:00").do(tweet)
-schedule.every().day.at("21:00").do(tweet)
+schedule.every().minute.at(":00").do(tweet)
 
 while True:
   schedule.run_pending()

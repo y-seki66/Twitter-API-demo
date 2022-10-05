@@ -13,7 +13,7 @@ def getCurrentTime():
   utc = datetime.datetime.now(timezone('UTC'))
   jst = utc.astimezone(timezone('Asia/Tokyo')).strftime('%H:%M')
   print(jst)
-  # return jst
+  return jst
 
 def tweet():
   twitter = OAuth1Session(
